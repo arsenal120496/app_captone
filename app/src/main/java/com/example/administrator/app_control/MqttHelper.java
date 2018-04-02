@@ -57,6 +57,10 @@ public class MqttHelper {
         mqttAndroidClient.setCallback(callback);
     }
 
+    public MqttAndroidClient getMqttAndroidClient() {
+        return mqttAndroidClient;
+    }
+
     private void connect(){
         MqttConnectOptions mqttConnectOptions = new MqttConnectOptions();
         mqttConnectOptions.setAutomaticReconnect(true);

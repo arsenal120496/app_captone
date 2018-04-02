@@ -17,7 +17,9 @@ public class MainActivity extends AppCompatActivity {
     private Button btnLeft;
     private Button btnRight;
     private Button btnConnect;
+    private Button btnDisconnect;
     private EditText txtIP;
+    private boolean checkConnect;
 
     private MqttHelper mqttHelper = null;
 
@@ -32,12 +34,29 @@ public class MainActivity extends AppCompatActivity {
         btnBackward = (Button) findViewById(R.id.btnBackward);
         btnLeft = (Button) findViewById(R.id.btnLeft);
         btnRight = (Button) findViewById(R.id.btnRight);
+        btnDisconnect = (Button) findViewById(R.id.btnDisconnect);
         txtIP = (EditText) findViewById(R.id.txtIP);
 
         btnConnect.setOnClickListener(new View.OnClickListener() {
             @Override
             public void onClick(View v) {
                 mqttHelper = new MqttHelper(getApplicationContext(),txtIP.getText().toString());
+                btnDisconnect.setVisibility(View.VISIBLE);
+            }
+        });
+
+        btnDisconnect.setOnClickListener(new View.OnClickListener() {
+            @Override
+            public void onClick(View v) {
+                try {
+                    if(mqttHelper!=null && mqttHelper.getMqttAndroidClient() != null ) {
+                        btnDisconnect.setVisibility(View.INVISIBLE);
+                        mqttHelper.getMqttAndroidClient().disconnect();
+                        mqttHelper = null;
+                    }
+                } catch (MqttException e) {
+                    e.printStackTrace();
+                }
             }
         });
 
